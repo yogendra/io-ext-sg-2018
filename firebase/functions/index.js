@@ -4,7 +4,7 @@ function compareDates(d1, d2) { if (d1 < d2) { return -1; } else if (d1 > d2) { 
 function compareAgenda(e1, e2) { return compareDates(e1.from, e2.from); }
 function mapAngendaDates(e) { e.from = new Date(e.from); e.to = new Date(e.to); return e; }
 function localTimeString(t) {
-  return t.toLocaleString("en-SG", { timeZone: "Asia/Singapore" });
+  return t.toLocaleString('en-SG', { timeZone: 'Asia/Singapore' }).substring(11, 22).trim().replace(":00 ", " ");
 }
 let agenda = require("./agenda.json").map(mapAngendaDates).sort(compareAgenda);
 
@@ -50,7 +50,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     if (event) {
       console.log("Event: " + JSON.stringify(event));
 
-      let timePart = `(${localTimeString(event.from).substring(11, 16)} - ${localTimeString(event.to).substring(11, 16)})`;
+      let timePart = `(${localTimeString(event.from)} - ${localTimeString(event.to)})`;
       let titlePart = typeof (event.presenter) != "undefined" ? `${event.title} by ${event.presenter}` : `${event.title}`;
       let response = `${titlePart} ${timePart}`;
 
