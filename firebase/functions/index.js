@@ -26,12 +26,18 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     agent.add(`I didn't understand`);
     agent.add(`I'm sorry, can you try again?`);
   }
-  function eventQuery(agent) {
-    let time = request.body.queryResult.parameters.time || new Date();
+  function nextEventQuery(agent) {
+    let event = agenda.find(function (e) { return e.from > new Date(); });
+    sendEventDetails(agent, event);
+  }
 
-    console.log(`Event Query executed: ${request.body.queryResult.queryText}, time: ${time}`);
+  function findEventByTime(agent) {
+    let time = request.body.queryResult.parameters.time;
+    let event = agenda.find(function (e) { return e.from < time && time < e.to; });
+    sendEventDetails(agent, event);
+  }
 
-    let event = agenda.find(function (e) { return e.from > time && e.to > time; });
+  function sendEventDetails(agent, event) {
     if (event) {
       console.log("Event: " + JSON.stringify(event));
       let timePart = `(${event.from.toISOString().substring(11, 16)} -  ${event.to.toISOString().substring(11, 16)})`
@@ -41,6 +47,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       console.log("Dialog Flow Response Body: " + response);
       agent.add(response);
     } else {
+      console.log("No event found");
       agent.add("Oops! Seems like no fun at that time.");
     }
 
@@ -49,6 +56,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
-  intentMap.set('Event Query', eventQuery);
+  intentMap.set('Next Event Query', nextEventQuery);
+  intentMap.set('Find Event By Time', findEventByTime);
   agent.handleRequest(intentMap);
 });
