@@ -57,6 +57,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
   intentMap.set('Next Event Query', nextEventQuery);
-  intentMap.set('Find Event By Time', findEventByTime);
+  intentMap.set('Find Event by Time', findEventByTime);
   agent.handleRequest(intentMap);
 });
