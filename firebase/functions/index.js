@@ -27,11 +27,23 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     agent.add(`I'm sorry, can you try again?`);
   }
   function eventQuery(agent) {
-    console.log('Event Query executed');
-    let now = new Date();
-    let event = agenda.find(function (e) { return e.from > now && e.to > now; });
-    let response = `Next up: ${event.title} by ${event.presenter} at ${event.timeString}`;
-    agent.add(response);
+    let time = request.body.queryResult.parameters.time || new Date();
+
+    console.log(`Event Query executed: ${request.body.queryResult.queryText}, time: ${time}`);
+
+    let event = agenda.find(function (e) { return e.from > time && e.to > time; });
+    if (event) {
+      console.log("Event: " + JSON.stringify(event));
+      let timePart = `(${event.from.toISOString().substring(11, 16)} -  ${event.to.toISOString().substring(11, 16)})`
+      let titlePart = typeof (event.presenter) != undefined ? `${event.title} by ${event.presenter}` : `${event.title}`;
+      let response = `${titlePart} ${timePart}`;
+
+      console.log("Dialog Flow Response Body: " + response);
+      agent.add(response);
+    } else {
+      agent.add("Oops! Seems like no fun at that time.");
+    }
+
   }
 
   let intentMap = new Map();
