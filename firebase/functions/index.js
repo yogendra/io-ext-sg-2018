@@ -4,7 +4,7 @@ function compareDates(d1, d2) { if (d1 < d2) { return -1; } else if (d1 > d2) { 
 function compareAgenda(e1, e2) { return compareDates(e1.from, e2.from); }
 function mapAngendaDates(e) { e.from = new Date(e.from); e.to = new Date(e.to); return e; }
 function localTimeString(t) {
-  return t.toLocaleString('en-SG', { timeZone: 'Asia/Singapore' }).substring(11, 22).trim().replace(":00 ", " ");
+  return t.toLocaleTimeString('en-SG', { timeZone: 'Asia/Singapore' }).replace(":00 ", " ");
 }
 let agenda = require("./agenda.json").map(mapAngendaDates).sort(compareAgenda);
 
