@@ -3,7 +3,9 @@
 function compareDates(d1, d2) { if (d1 < d2) { return -1; } else if (d1 > d2) { return 1; } return 0; }
 function compareAgenda(e1, e2) { return compareDates(e1.from, e2.from); }
 function mapAngendaDates(e) { e.from = new Date(e.from); e.to = new Date(e.to); return e; }
-
+function localTimeString(t) {
+  return t.toLocaleString("en-SG", { timeZone: "Asia/Singapore" });
+}
 let agenda = require("./agenda.json").map(mapAngendaDates).sort(compareAgenda);
 
 
@@ -48,8 +50,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     if (event) {
       console.log("Event: " + JSON.stringify(event));
 
-      let timePart = `(${event.from.toISOString('en-SG', { timeZone: 'Asia/Singapore' }).substring(11, 16)} -  ${event.to.toISOString('en-SG', { timeZone: 'Asia/Singapore' }).substring(11, 16)})`
-      let titlePart = typeof (event.presenter) != undefined ? `${event.title} by ${event.presenter}` : `${event.title}`;
+      let timePart = `(${localTimeString(event.from).substring(11, 16)} - ${localTimeString(event.to).substring(11, 16)})`;
+      let titlePart = typeof (event.presenter) != "undefined" ? `${event.title} by ${event.presenter}` : `${event.title}`;
       let response = `${titlePart} ${timePart}`;
 
       console.log("Dialog Flow Response Body: " + response);
