@@ -11,7 +11,6 @@ let agenda = require("./agenda.json").map(mapAngendaDates).sort(compareAgenda);
 
 const functions = require('firebase-functions');
 const { WebhookClient } = require('dialogflow-fulfillment');
-const { Card, Suggestion } = require('dialogflow-fulfillment');
 
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 
@@ -36,9 +35,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   function findEventByTime(agent) {
     let time = new Date(request.body.queryResult.parameters.time);
     let event = agenda.find(function (e) {
-      let result = e.from <= time && time < e.to;
-      console.log({ result, from: e.from, to: e.to, time });
-      return result;
+      return e.from <= time && time < e.to;
     });
     sendEventDetails(agent, event);
   }
