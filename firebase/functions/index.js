@@ -34,7 +34,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   function findEventByTime(agent) {
     let time = new Date(request.body.queryResult.parameters.time);
     let event = agenda.find(function (e) {
-      let result = e.from < time && time < e.to;
+      let result = e.from <= time && time < e.to;
       console.log({ result, from: e.from, to: e.to, time });
       return result;
     });
@@ -47,7 +47,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   function sendEventDetails(agent, event) {
     if (event) {
       console.log("Event: " + JSON.stringify(event));
-      let timePart = `(${event.from.toISOString().substring(11, 16)} -  ${event.to.toISOString().substring(11, 16)})`
+
+      let timePart = `(${event.from.toISOString('en-SG', { timeZone: 'Asia/Singapore' }).substring(11, 16)} -  ${event.to.toISOString('en-SG', { timeZone: 'Asia/Singapore' }).substring(11, 16)})`
       let titlePart = typeof (event.presenter) != undefined ? `${event.title} by ${event.presenter}` : `${event.title}`;
       let response = `${titlePart} ${timePart}`;
 
