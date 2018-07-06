@@ -32,9 +32,16 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   }
 
   function findEventByTime(agent) {
-    let time = request.body.queryResult.parameters.time;
-    let event = agenda.find(function (e) { return e.from < time && time < e.to; });
+    let time = new Date(request.body.queryResult.parameters.time);
+    let event = agenda.find(function (e) {
+      let result = e.from < time && time < e.to;
+      console.log({ result, from: e.from, to: e.to, time });
+      return result;
+    });
     sendEventDetails(agent, event);
+  }
+  function listEvents(agent) {
+    agenda.forEach(function (e) { sendEventDetails(agent, e) });
   }
 
   function sendEventDetails(agent, event) {
@@ -58,5 +65,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('Default Fallback Intent', fallback);
   intentMap.set('Next Event Query', nextEventQuery);
   intentMap.set('Find Event by Time', findEventByTime);
+  intentMap.set("List Events", listEvents);
   agent.handleRequest(intentMap);
 });
+
