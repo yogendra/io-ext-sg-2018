@@ -14,14 +14,14 @@
     {
         "from": "2018-07-07T13:45:00+08:00",
         "to": "2018-07-07T14:30:00+08:00",
-        "title": "Profiling and Android Vitals",
-        "presenter": "Renu (Grab)"
+        "title": "Google Search: more mobile than ever!",
+        "presenter": "Cherry (Google)"
     },
     {
         "from": "2018-07-07T14:30:00+08:00",
         "to": "2018-07-07T15:00:00+08:00",
-        "title": "Web Presence",
-        "presenter": "Cherry (Google)"
+        "title": "Profiling and Android Vitals",
+        "presenter": "Renu (Grab)"
     },
     {
         "from": "2018-07-07T15:00:00+08:00",
@@ -48,15 +48,9 @@
     },
     {
         "from": "2018-07-07T17:00:00+08:00",
-        "to": "2018-07-07T17:30:00+08:00",
-        "title": "Design Topic",
-        "presenter": "TBD"
-    },
-    {
-        "from": "2018-07-07T17:30:00+08:00",
         "to": "2018-07-07T18:00:00+08:00",
-        "title": "Android Topic",
-        "presenter": "TBD"
+        "title": "Kotlin Extensions",
+        "presenter": "Steve (Grab)"
     },
     {
         "from": "2018-07-07T18:00:00+08:00",
