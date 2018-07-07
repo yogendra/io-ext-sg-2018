@@ -1,5 +1,6 @@
 {
   "projects": {
-    "prod": "io-ext-singapore-2018"
+    "prod": "io-ext-singapore-2018",
+    "default": "io-ext-singapore-2018"
   }
 }
