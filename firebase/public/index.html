@@ -6,10 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>I/O Extended Singapore 2018</title>
+    <style>
+        .banner {
+            background-image: url("banner.png");
+            background-repeat: no-repeat;
+            display: block;
+            height: 450px;
+        }
+
+        .schedule {
+            background-image: url("schedule.png");
+            background-repeat: no-repeat;
+            display: inline-block;
+            width: 430px;
+            height: 400px;
+
+        }
+
+        chatbot {
+            width: 430px;
+            display: inline-block;
+        }
+    </style>
 </head>
 
 <body>
-    <iframe width="350" height="430" src="https://console.dialogflow.com/api-client/demo/embedded/io-ext-sg-2018"></iframe>
+    <div class="banner"></div>
+    <div></div>
+    <iframe class="chatbot" width="350" height="430" src="https://console.dialogflow.com/api-client/demo/embedded/io-ext-sg-2018"></iframe>
+    <div class="schedule"></div>
+
 </body>
 
 </html>
