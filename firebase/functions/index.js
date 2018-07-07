@@ -6,7 +6,7 @@ function mapAngendaDates(e) { e.from = new Date(e.from); e.to = new Date(e.to); 
 function localTimeString(t) {
   return t.toLocaleTimeString('en-SG', { timeZone: 'Asia/Singapore' }).replace(":00 ", " ");
 }
-let agenda = require("./agenda.json").map(mapAngendaDates).sort(compareAgenda);
+const agenda = require("./agenda.json").map(mapAngendaDates).sort(compareAgenda);
 
 
 const functions = require('firebase-functions');
@@ -40,24 +40,28 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     sendEventDetails(agent, event);
   }
   function listEvents(agent) {
-    agenda.forEach(function (e) { sendEventDetails(agent, e) });
+    sendEventDetails(agent, agenda);
   }
 
   function sendEventDetails(agent, event) {
-    if (event) {
-      console.log("Event: " + JSON.stringify(event));
-
-      let timePart = `(${localTimeString(event.from)} - ${localTimeString(event.to)})`;
-      let titlePart = typeof (event.presenter) != "undefined" ? `${event.title} by ${event.presenter}` : `${event.title}`;
-      let response = `${titlePart} ${timePart}`;
-
+    if (Array.isArray(event)) {
+      let response = event
+        .map(eventDetailString)
+        .join("\n\n");
+      agent.add(response);
+    } else if (event) {
+      let response = eventDetailString(event);
       console.log("Dialog Flow Response Body: " + response);
       agent.add(response);
     } else {
       console.log("No event found");
       agent.add("Oops! Seems like no fun at that time.");
     }
-
+  }
+  function eventDetailString(event) {
+    let timePart = `(${localTimeString(event.from)} - ${localTimeString(event.to)})`;
+    let titlePart = typeof (event.presenter) != "undefined" ? `${event.title} by ${event.presenter}` : `${event.title}`;
+    return `${titlePart}\n${timePart}`;
   }
 
   let intentMap = new Map();
